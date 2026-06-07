@@ -7,13 +7,122 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/p5.min.js"></script>
   </head>
   <body>
-    <div id="controls">
-      <label for="yearSelect">Filter by Year:</label>
-      <select id="yearSelect">
-        <option value="all">All Years</option>
-      </select>
+    <!-- Title -->
+    <div id="header">
+      <h1>🎬 Creative Film Poster Editor</h1>
+      <p>Search a movie, then apply real‑time filters &amp; distortions</p>
     </div>
-    <div id="film-grid"></div>
+
+    <!-- Search + Year filter -->
+    <div id="controls">
+      <div id="search-box">
+        <input type="text" id="searchInput" placeholder="Search movie title..." />
+        <button id="searchBtn">🔍 Search</button>
+      </div>
+      <div id="year-filter">
+        <label for="yearSelect">Year:</label>
+        <select id="yearSelect">
+          <option value="all">All Years</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Loading indicator -->
+    <div id="loading">⏳ Loading poster...</div>
+
+    <!-- Main layout -->
+    <div id="main-layout">
+      <!-- Film list sidebar -->
+      <div id="film-list">
+        <h3 id="list-title">🎞️ Results</h3>
+        <div id="film-grid"></div>
+      </div>
+
+      <!-- Canvas editor area -->
+      <div id="editor">
+        <div id="canvas-container"></div>
+
+        <!-- Toolbar -->
+        <div id="toolbar">
+          <button class="tool-btn active" data-tool="none">🖐️ Select</button>
+          <button class="tool-btn" data-tool="blur">🌫️ Blur</button>
+          <button class="tool-btn" data-tool="pixelate">🔲 Pixelate</button>
+          <button class="tool-btn" data-tool="glitch">⚡ Glitch</button>
+          <button class="tool-btn" data-tool="noise">📡 Noise</button>
+          <button class="tool-btn" data-tool="filter">🎨 Filter</button>
+          <button class="tool-btn" data-tool="color">🌈 Color</button>
+          <button class="tool-btn" data-tool="edges">📐 Edges</button>
+          <button class="tool-btn" data-tool="warp">🌀 Warp</button>
+          <button class="tool-btn" data-tool="erase">🧹 Erase</button>
+          <button class="tool-btn" data-tool="reset">🔁 Reset</button>
+        </div>
+
+        <!-- Dynamic controls area -->
+        <div id="dynamic-controls">
+          <!-- Brush sliders -->
+          <div id="brushSliders" class="slider-group">
+            <label id="sizeLabel">Size: <span id="sizeVal">30</span>
+              <input type="range" id="brushSizeSlider" min="4" max="120" value="30" />
+            </label>
+            <label id="opacityLabel">Opacity: <span id="opacityVal">100</span>%
+              <input type="range" id="brushOpacitySlider" min="10" max="100" value="100" />
+            </label>
+            <label id="hardnessLabel">Hardness: <span id="hardnessVal">100</span>%
+              <input type="range" id="brushHardnessSlider" min="0" max="100" value="100" />
+            </label>
+          </div>
+
+          <!-- Color sliders (hidden by default) -->
+          <div id="colorSliders" class="slider-group" style="display:none">
+            <label>Hue: <span id="hueVal">0</span>°
+              <input type="range" id="hueSlider" min="-180" max="180" value="0" />
+            </label>
+            <label>Sat: <span id="satVal">0</span>%
+              <input type="range" id="satSlider" min="-100" max="100" value="0" />
+            </label>
+            <label>Exp: <span id="expVal">0</span>%
+              <input type="range" id="expSlider" min="-100" max="100" value="0" />
+            </label>
+            <label>Contrast: <span id="contrastVal">0</span>%
+              <input type="range" id="contrastSlider" min="-100" max="100" value="0" />
+            </label>
+          </div>
+
+          <!-- Filter radio options (hidden by default) -->
+          <div id="filterOptions" class="radio-group" style="display:none">
+            <label><input type="radio" name="filterType" value="invert" checked /> Invert</label>
+            <label><input type="radio" name="filterType" value="sepia" /> Sepia</label>
+            <label><input type="radio" name="filterType" value="bw" /> Black &amp; White</label>
+          </div>
+
+          <!-- Blur toggle -->
+          <div id="blurToggle" class="toggle-row" style="display:none">
+            <span>B&amp;W</span>
+            <label class="switch">
+              <input type="checkbox" id="blurColorToggle" checked />
+              <span class="slider-sw"></span>
+            </label>
+            <span>Color</span>
+          </div>
+
+          <!-- Noise toggle -->
+          <div id="noiseToggle" class="toggle-row" style="display:none">
+            <span>B&amp;W</span>
+            <label class="switch">
+              <input type="checkbox" id="noiseColorToggle" checked />
+              <span class="slider-sw"></span>
+            </label>
+            <span>Color</span>
+          </div>
+        </div>
+
+        <p id="tool-hint">Select a tool, then click &amp; drag on the poster</p>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer">Data: Gist / TMDB · p5.js pixel manipulation</div>
+
     <script src="sketch.js"></script>
   </body>
 </html>
