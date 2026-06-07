@@ -77,6 +77,21 @@ function setup() {
     });
   });
 
+  const saveBtn = document.querySelector('[data-tool="save"]');
+  if (saveBtn) {
+    saveBtn.addEventListener("click", () => {
+      if (posterGraphics) {
+        const canvas = posterGraphics.elt;
+        const link = document.createElement("a");
+        link.download = "edited-poster.png";
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+      } else {
+        console.warn("No poster to save");
+      }
+    });
+  }
+
   setupSliders();
   updateDynamicControls();
 }
@@ -477,6 +492,20 @@ function loadPlaceholderPoster(){
   updateColorSliderUI();updateDynamicControls(); activeTool="none";
   document.querySelectorAll(".tool-btn").forEach(b=>b.classList.remove("active"));
   document.querySelector('[data-tool="none"]')?.classList.add("active"); redraw();
+}
+
+function savePoster() {
+  if (!posterGraphics) {
+    console.warn("No poster to save");
+    return;
+  }
+  // Create a temporary anchor to trigger download
+  const canvas = posterGraphics.elt;
+  const dataURL = canvas.toDataURL("image/png");
+  const link = document.createElement("a");
+  link.download = "edited-poster.png";
+  link.href = dataURL;
+  link.click();
 }
 
 function windowResized(){
